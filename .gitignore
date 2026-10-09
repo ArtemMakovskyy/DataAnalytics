@@ -1,0 +1,5 @@
+/.venv/
+/.obsidian/
+/.idea/
+__pycache__/
+*.py[cod]
