@@ -2,8 +2,11 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+matplotlib.use("Agg")
 
 from app.models.cohort_models import RetentionResponse, RetentionRow
 
