@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import logging
+
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -11,6 +13,8 @@ from app.models.cohort_models import RetentionResponse, RetentionRow
 matplotlib.use("Agg")
 
 BASE_DIR = Path(__file__).resolve().parents[2] / "product" / "frameworks" / "cohort"
+
+logger = logging.getLogger(__name__)
 
 
 def generate_data() -> pd.DataFrame:
@@ -70,14 +74,14 @@ def build_cohort_analysis() -> RetentionResponse:
     # Save the generated data to a CSV file for reference
     file_path = BASE_DIR / "cohort_analysis_data.csv"
     data.to_csv(file_path, index=False)
-    print(f"Sample data saved to: {file_path}")
+    logger.info("Sample data saved to: %s", file_path)
 
     retention = calculate_retention(data)
 
     # Save the retention rates to a CSV file
     retention_file_path = BASE_DIR / "cohort_retention.csv"
     retention.to_csv(retention_file_path)
-    print(f"Cohort retention data saved to: {retention_file_path}")
+    logger.info("Cohort retention data saved to: %s", retention_file_path)
 
     # 3. Visualize the cohort analysis using a heatmap
     # Set up the plot
@@ -96,7 +100,7 @@ def build_cohort_analysis() -> RetentionResponse:
     plt.savefig(BASE_DIR / "cohort_retention_heatmap.png")
     plt.close()
 
-    print("Cohort analysis heatmap saved as 'cohort_retention_heatmap.png'")
+    logger.info("Cohort analysis heatmap saved as 'cohort_retention_heatmap.png'")
 
     # 4. Retention in JSON for the browser
     rows = [

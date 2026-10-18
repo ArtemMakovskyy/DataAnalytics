@@ -1,6 +1,10 @@
+import logging
+
 import uvicorn
 from fastapi import FastAPI
 from app.controllers import cohort_analysis_controller, test_controller
+
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI(title="DataAnalytics API")
 app.include_router(test_controller.router)
