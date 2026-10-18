@@ -15,6 +15,10 @@ matplotlib.use("Agg")
 
 BASE_DIR = Path(__file__).resolve().parents[2] / "product" / "frameworks" / "cohort"
 
+DATA_CSV = "cohort_analysis_data.csv"
+RETENTION_CSV = "cohort_retention.csv"
+HEATMAP_PNG = "cohort_retention_heatmap.png"
+
 logger = logging.getLogger(__name__)
 
 
@@ -72,14 +76,14 @@ def calculate_retention(data: pd.DataFrame) -> pd.DataFrame:
 def build_cohort_analysis() -> RetentionResponse:
     data = generate_data()
     # Save the generated data to a CSV file for reference
-    file_path = BASE_DIR / "cohort_analysis_data.csv"
+    file_path = BASE_DIR / DATA_CSV
     data.to_csv(file_path, index=False)
     logger.info("Sample data saved to: %s", file_path)
 
     retention = calculate_retention(data)
 
     # Save the retention rates to a CSV file
-    retention_file_path = BASE_DIR / "cohort_retention.csv"
+    retention_file_path = BASE_DIR / RETENTION_CSV
     retention.to_csv(retention_file_path)
     logger.info("Cohort retention data saved to: %s", retention_file_path)
 
@@ -97,10 +101,10 @@ def build_cohort_analysis() -> RetentionResponse:
 
     # Adjust layout and save the heatmap as a PNG image
     plt.tight_layout()
-    plt.savefig(BASE_DIR / "cohort_retention_heatmap.png")
+    plt.savefig(BASE_DIR / HEATMAP_PNG)
     plt.close()
 
-    logger.info("Cohort analysis heatmap saved as 'cohort_retention_heatmap.png'")
+    logger.info("Cohort analysis heatmap saved as %s", HEATMAP_PNG)
 
     # 4. Retention in JSON for the browser
     rows = [
