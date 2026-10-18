@@ -62,7 +62,7 @@ retention = cohort_data.divide(cohort_sizes, axis=0) * 100  # Calculate retentio
 
 
 # Save the retention rates to a CSV file
-retention_file_path = "cohort_retention.csv"
+retention_file_path = "temp/cohort_retention.csv"
 retention.to_csv(retention_file_path)
 print(f"Cohort retention data saved to: {retention_file_path}")
 
@@ -84,7 +84,7 @@ plt.xlabel("Cohort Period (Months Since First Purchase)")
 
 # Adjust layout and save the heatmap as a PNG image
 plt.tight_layout()
-plt.savefig("cohort_retention_heatmap.png")
+plt.savefig("temp/cohort_retention_heatmap.png")
 plt.show()
 
 
