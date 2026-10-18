@@ -1,3 +1,4 @@
+from functools import lru_cache
 from pathlib import Path
 
 import logging
@@ -70,7 +71,6 @@ def calculate_retention(data: pd.DataFrame) -> pd.DataFrame:
 
 def build_cohort_analysis() -> RetentionResponse:
     data = generate_data()
-
     # Save the generated data to a CSV file for reference
     file_path = BASE_DIR / "cohort_analysis_data.csv"
     data.to_csv(file_path, index=False)
@@ -111,3 +111,8 @@ def build_cohort_analysis() -> RetentionResponse:
         for cohort_month, values in retention.iterrows()
     ]
     return RetentionResponse(count=len(rows), rows=rows)
+
+
+@lru_cache(maxsize=1)
+def get_cohort_analysis() -> RetentionResponse:
+    return build_cohort_analysis()

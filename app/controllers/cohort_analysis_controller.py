@@ -8,4 +8,4 @@ router = APIRouter(prefix="/api/cohort-analysis", tags=["cohort-analysis"])
 
 @router.get("/retention", response_model=RetentionResponse)
 def get_retention() -> RetentionResponse:
-    return cohort_service.build_cohort_analysis()
+    return cohort_service.get_cohort_analysis()
