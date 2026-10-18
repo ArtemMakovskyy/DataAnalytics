@@ -4,3 +4,4 @@
 __pycache__/
 *.py[cod]
 /dep.inst/
+/product/frameworks/cohort/info/
