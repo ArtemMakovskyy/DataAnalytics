@@ -6,14 +6,14 @@ import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-matplotlib.use("Agg")
-
 from app.models.cohort_models import RetentionResponse, RetentionRow
+
+matplotlib.use("Agg")
 
 BASE_DIR = Path(__file__).resolve().parents[2] / "product" / "frameworks" / "cohort"
 
 
-def build_cohort_analysis() -> RetentionResponse:
+def generate_data() -> pd.DataFrame:
     # 1. Generate sample transactional data
     np.random.seed(42)
 
@@ -30,19 +30,17 @@ def build_cohort_analysis() -> RetentionResponse:
     sales = np.random.randint(10, 1000, n_customers)
 
     # Create a DataFrame to store the generated data
-    data = pd.DataFrame({
+    return pd.DataFrame({
         "CustomerID": customer_ids,
         "TransactionDate": transaction_dates,
         "Sales": sales
     })
 
-    # Save the generated data to a CSV file for reference
-    file_path = BASE_DIR / "cohort_analysis_data.csv"
-    data.to_csv(file_path, index=False)
-    print(f"Sample data saved to: {file_path}")
 
+def calculate_retention(data: pd.DataFrame) -> pd.DataFrame:
     # 2. Perform cohort analysis
     # Add the "OrderMonth" column to represent the month of each transaction
+    data = data.copy()
     data["OrderMonth"] = data["TransactionDate"].dt.to_period("M")
 
     # Add the "CohortMonth" column to represent the first transaction month of each customer
@@ -63,6 +61,18 @@ def build_cohort_analysis() -> RetentionResponse:
     # Calculate retention rates by dividing the number of customers in each period by the size of the cohort
     cohort_sizes = cohort_data.iloc[:, 0]
     retention = cohort_data.divide(cohort_sizes, axis=0) * 100
+    return retention
+
+
+def build_cohort_analysis() -> RetentionResponse:
+    data = generate_data()
+
+    # Save the generated data to a CSV file for reference
+    file_path = BASE_DIR / "cohort_analysis_data.csv"
+    data.to_csv(file_path, index=False)
+    print(f"Sample data saved to: {file_path}")
+
+    retention = calculate_retention(data)
 
     # Save the retention rates to a CSV file
     retention_file_path = BASE_DIR / "cohort_retention.csv"
