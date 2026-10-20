@@ -1,9 +1,16 @@
+# =============================================================================
+# IMPORTS
+# =============================================================================
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
+# =============================================================================
+# SAMPLE DATA GENERATION
+# =============================================================================
 
 # Generate sample transaction data
 np.random.seed(42)
@@ -31,9 +38,17 @@ df = pd.DataFrame(data)
 df = df[df['transaction_amount'] > 0]  # Remove negative amounts
 
 
+# =============================================================================
+# ANALYSIS PARAMETERS
+# =============================================================================
+
 # Set analysis date
 analysis_date = datetime(2024, 1, 1)
 
+
+# =============================================================================
+# RFM CALCULATION
+# =============================================================================
 
 def calculate_rfm(df, analysis_date):
    """Calculate RFM metrics for each customer."""
@@ -68,6 +83,10 @@ def calculate_rfm(df, analysis_date):
    return rfm
 
 
+# =============================================================================
+# CALCULATE RFM
+# =============================================================================
+
 # Add transaction IDs
 df['transaction_id'] = range(len(df))
 
@@ -75,6 +94,10 @@ df['transaction_id'] = range(len(df))
 # Calculate RFM
 rfm_results = calculate_rfm(df, analysis_date)
 
+
+# =============================================================================
+# CUSTOMER SEGMENTATION
+# =============================================================================
 
 # Define customer segments
 def segment_customers(value):
@@ -92,6 +115,10 @@ def segment_customers(value):
 rfm_results['customer_segment'] = rfm_results['rfm_value'].apply(segment_customers)
 
 
+# =============================================================================
+# SUMMARY STATISTICS
+# =============================================================================
+
 # Print summary statistics
 print("\nRFM Analysis Summary:")
 print("-" * 50)
@@ -105,6 +132,10 @@ print(rfm_results[['recency', 'frequency', 'monetary']].describe())
 print("\nSample RFM Results (First 10 customers):")
 print(rfm_results.head(10).to_string())
 
+
+# =============================================================================
+# VISUALIZATION
+# =============================================================================
 
 # Create segment visualization
 plt.figure(figsize=(10, 6))
